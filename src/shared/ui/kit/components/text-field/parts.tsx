@@ -54,7 +54,7 @@ function BaseElement(props: BaseElementProps) {
 	return <ark.div {...props} {...getProps()} />;
 }
 
-type BaseInputProps = HTMLArkProps<'input'> & { ref: Ref<ComponentRef<'input'>> };
+type BaseInputProps = HTMLArkProps<'input'> & { ref?: Ref<ComponentRef<'input'>> };
 function BaseInput(props: BaseInputProps) {
 	const getProps = useTextFieldPropsStrictContext();
 	const { value, onValueChange } = useTextFieldValueStrictContext();

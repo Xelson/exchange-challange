@@ -15,11 +15,11 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@reatom/core':
-        specifier: 1000.0.0-alpha.41
-        version: 1000.0.0-alpha.41
+        specifier: 1000.0.0-alpha.43
+        version: 1000.0.0-alpha.43
       '@reatom/react':
         specifier: 1000.0.0-alpha.41
-        version: 1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.41)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.43)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -515,8 +515,8 @@ packages:
   '@pandacss/types@1.4.3':
     resolution: {integrity: sha512-8bz5jqQLhHTYlzVUBxpWMf+lzexQqlZJY8Cot2B7wJjg9T+VK3guTxNJV1ioiGexwcDQrn/MJiNszd6C28djqw==}
 
-  '@reatom/core@1000.0.0-alpha.41':
-    resolution: {integrity: sha512-FKoITwzAZFJT+akqvcThNvM6dpsR1kr6FP13LCKGEToFclLZOl5uFh/jienol6QGKiDej2HnFsg5EzLiEyv92g==}
+  '@reatom/core@1000.0.0-alpha.43':
+    resolution: {integrity: sha512-szGgchIhitK/GaaGSCeoIfnsx4DIKHYfB682iCW+eLsbGvPkROJi62r2U9GLvl/unRXj0GWqW73RR0Vn0HCtuA==}
     peerDependencies:
       idb-keyval: '*'
     peerDependenciesMeta:
@@ -2676,13 +2676,13 @@ snapshots:
 
   '@pandacss/types@1.4.3': {}
 
-  '@reatom/core@1000.0.0-alpha.41':
+  '@reatom/core@1000.0.0-alpha.43':
     dependencies:
       '@standard-schema/spec': 1.0.0
 
-  '@reatom/react@1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.41)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@reatom/react@1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.43)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
-      '@reatom/core': 1000.0.0-alpha.41
+      '@reatom/core': 1000.0.0-alpha.43
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 

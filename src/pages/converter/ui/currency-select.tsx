@@ -8,7 +8,7 @@ import { Icons } from '@/shared/ui/kit/icons';
 import { CurrencyItem } from './CurrencyItem';
 import { memo } from 'react';
 
-type InputParams = { defaultCurrency?: Currency } | undefined;
+type InputParams = { defaultCurrency?: Currency };
 type OutputParams = Currency;
 
 export const currencySelectDialog = reatomControllablePopup<Dialog.RootProps, InputParams, OutputParams>(

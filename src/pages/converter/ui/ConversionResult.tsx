@@ -1,6 +1,7 @@
 import { DividerStack, Heading, Text } from '@/shared/ui/kit/components';
 import { reatomComponent } from '@reatom/react';
 import { Center, HStack, VStack } from 'styled-system/jsx';
+import { conversionResult, converterForm, dataAtom } from '../model/form';
 
 export const ConversionResult = () => {
 	return (
@@ -38,15 +39,27 @@ export const ConversionResult = () => {
 };
 
 export const RateIndicator = reatomComponent(() => {
+	const rate = conversionResult();
+	const from = converterForm.fields.from();
+	const to = converterForm.fields.to();
+	const amount = converterForm.fields.amount();
+
 	return (
 		<VStack gap='0.25rem' width='full'>
-			<Heading fontSize='1.5rem' fontWeight='700'>€0.92</Heading>
-			<Text color='neutral.500' fontSize='0.75rem'>1 USD =</Text>
+			<Heading fontSize='1.5rem' fontWeight='700'>
+				{rate?.toFixed(2)} {to.symbol}
+			</Heading>
+			<Text color='neutral.500' fontSize='0.75rem'>
+				{amount} {from.code} =
+			</Text>
 		</VStack>
 	);
 }, 'ConversionResult.RateIndicator');
 
 export const ExchangeRateDetails = reatomComponent(() => {
+	const from = converterForm.fields.from();
+	const to = converterForm.fields.to();
+
 	return (
 		<VStack alignItems='start' gap='0.75rem' width='full'>
 			<HStack gap='1rem' width='full' justifyContent='space-between'>
@@ -55,7 +68,7 @@ export const ExchangeRateDetails = reatomComponent(() => {
 				</Text>
 
 				<Text fontSize='0.75rem' fontWeight='600'>
-					1 USD = 0.920000 EUR
+					1 {from.code} = {dataAtom()?.rate?.toFixed(2)} {to.code}
 				</Text>
 			</HStack>
 

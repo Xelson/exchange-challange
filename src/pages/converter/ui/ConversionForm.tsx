@@ -3,9 +3,9 @@ import { Icons } from '@/shared/ui/kit/icons';
 import { reatomComponent } from '@reatom/react';
 import { HStack, styled, VStack } from 'styled-system/jsx';
 import { CurrencyItem } from './CurrencyItem';
-import { currenciesList } from '../model/currency';
 import { currencySelectDialog } from './currency-select';
 import { wrap } from '@reatom/core';
+import { converterForm } from '../model/form';
 
 export const ConversionForm = () => {
 	return (
@@ -46,11 +46,19 @@ const Field = styled('label', {
 });
 
 const AmountField = reatomComponent(() => {
+	const field = converterForm.fields.amount;
+
 	return (
 		<Field>
 			<Text>Amount</Text>
 
-			<TextField.Root asChild width='full'>
+			<TextField.Root
+				asChild
+				width='full'
+				value={field.value()}
+				onValueChange={wrap(field.change)}
+				invalid={!!field.validation().error}
+			>
 				<div>
 					<TextField.Input
 						placeholder='Enter amount...'
@@ -84,30 +92,48 @@ const CurrencyButton = styled('button', {
 });
 
 const FromField = reatomComponent(() => {
+	const handleClick = wrap(async () => {
+		const result = await wrap(currencySelectDialog.requestOpen({
+			defaultCurrency: converterForm.fields.from(),
+		}));
+
+		if (result)
+			converterForm.fields.from.set(result);
+	});
+
 	return (
 		<Field as='div'>
 			<Text>From</Text>
 
 			<CurrencyButton
 				width='full'
-				onClick={wrap(currencySelectDialog.requestOpen)}
+				onClick={handleClick}
 			>
-				<CurrencyItem currency={currenciesList[0]} />
+				<CurrencyItem currency={converterForm.fields.from()} />
 			</CurrencyButton>
 		</Field>
 	);
 }, 'ConversionForm.FromField');
 
 const ToField = reatomComponent(() => {
+	const handleClick = wrap(async () => {
+		const result = await wrap(currencySelectDialog.requestOpen({
+			defaultCurrency: converterForm.fields.to(),
+		}));
+
+		if (result)
+			converterForm.fields.to.set(result);
+	});
+
 	return (
 		<Field as='div'>
 			<Text>To</Text>
 
 			<CurrencyButton
 				width='full'
-				onClick={wrap(currencySelectDialog.requestOpen)}
+				onClick={handleClick}
 			>
-				<CurrencyItem currency={currenciesList[1]} />
+				<CurrencyItem currency={converterForm.fields.to()} />
 			</CurrencyButton>
 		</Field>
 	);
@@ -124,6 +150,7 @@ const SwapButton = reatomComponent(() => {
 			cursor='pointer'
 			rounded='full'
 			_icon={{ boxSize: '1.125rem' }}
+			onClick={wrap(converterForm.swapDirections)}
 		>
 			<Icons.Swap />
 		</styled.button>

@@ -1,11 +1,12 @@
 import { Badge, Heading, Text } from '@/shared/ui/kit/components';
 import { Icons } from '@/shared/ui/kit/icons';
-import { onLineAtom } from '@reatom/core';
+import { noop, onLineAtom, wrap } from '@reatom/core';
 import { reatomComponent } from '@reatom/react';
 import { HStack, VStack } from 'styled-system/jsx';
 import { ConversionForm } from './ConversionForm';
 import { ConversionResult } from './ConversionResult';
 import { currencySelectDialog } from './currency-select';
+import { converterForm } from '../model/form';
 
 export const Component = () => {
 	return (
@@ -77,10 +78,20 @@ const LastUpdatedBadge = reatomComponent(() => {
 });
 
 const RefreshRatesBadgeButton = reatomComponent(() => {
+	const pending = converterForm.submit.pending() > 0;
+
 	return (
-		<Badge as='button' cursor='pointer'>
-			<Icons.Refresh />
-			<Text>Refresh rates</Text>
+		<Badge
+			cursor='pointer'
+			asChild
+		>
+			<button
+				disabled={pending}
+				onClick={wrap(() => converterForm.submit(true).catch(noop))}
+			>
+				<Icons.Refresh />
+				<Text>Refresh rates</Text>
+			</button>
 		</Badge>
 	);
 });
