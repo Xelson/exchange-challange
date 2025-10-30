@@ -1,5 +1,6 @@
 {
   "files": [],
+  "include": ["src", "panda.config.ts"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
