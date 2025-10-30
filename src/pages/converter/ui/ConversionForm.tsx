@@ -4,6 +4,8 @@ import { reatomComponent } from '@reatom/react';
 import { HStack, styled, VStack } from 'styled-system/jsx';
 import { CurrencyItem } from './CurrencyItem';
 import { currenciesList } from '../model/currency';
+import { currencySelectDialog } from './currency-select';
+import { wrap } from '@reatom/core';
 
 export const ConversionForm = () => {
 	return (
@@ -16,7 +18,16 @@ export const ConversionForm = () => {
 		>
 			<AmountField />
 
-			<HStack width='full' gap='0.75rem' alignItems='end'>
+			<HStack
+				width='full'
+				gap='0.75rem'
+				alignItems='end'
+				tabletDown={{
+					flexDirection: 'column',
+					alignItems: 'center',
+					gap: '0',
+				}}
+			>
 				<FromField />
 				<SwapButton />
 				<ToField />
@@ -77,7 +88,10 @@ const FromField = reatomComponent(() => {
 		<Field as='div'>
 			<Text>From</Text>
 
-			<CurrencyButton width='full'>
+			<CurrencyButton
+				width='full'
+				onClick={wrap(currencySelectDialog.requestOpen)}
+			>
 				<CurrencyItem currency={currenciesList[0]} />
 			</CurrencyButton>
 		</Field>
@@ -89,7 +103,10 @@ const ToField = reatomComponent(() => {
 		<Field as='div'>
 			<Text>To</Text>
 
-			<CurrencyButton width='full'>
+			<CurrencyButton
+				width='full'
+				onClick={wrap(currencySelectDialog.requestOpen)}
+			>
 				<CurrencyItem currency={currenciesList[1]} />
 			</CurrencyButton>
 		</Field>

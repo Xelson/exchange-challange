@@ -14,6 +14,9 @@ export const listbox = defineSlotRecipe({
 			display: 'flex',
 			flexDirection: 'column',
 			gap: '0.5rem',
+			padding: '0.25rem',
+			scrollPadding: '0.25rem',
+			borderRadius: '0.75rem',
 		},
 		item: {
 			display: 'flex',
@@ -22,6 +25,7 @@ export const listbox = defineSlotRecipe({
 			justifyContent: 'space-between',
 			gap: '0.75rem',
 			transition: '100ms background-color',
+			cursor: 'pointer',
 
 			height: '58px',
 			width: 'full',
@@ -29,10 +33,18 @@ export const listbox = defineSlotRecipe({
 			padding: '0.5rem',
 
 			_hover: {
-				backgroundColor: 'colorPalette.50',
+				backgroundColor: 'neutral.50',
 			},
 			_checked: {
-				backgroundColor: 'colorPalette.100',
+				backgroundColor: 'neutral.100',
+				_hover: {
+					backgroundColor: 'neutral.100',
+				},
+			},
+			_highlighted: {
+				outlineWidth: '2px',
+				outlineStyle: 'solid',
+				outlineColor: 'colorPalette.500',
 			},
 		},
 		itemIndicator: {

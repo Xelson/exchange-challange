@@ -1,5 +1,3 @@
-'use client';
-import { ark } from '@ark-ui/react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { dialog } from 'styled-system/recipes';
 import type { ComponentProps, HTMLStyledProps } from 'styled-system/types';
@@ -19,7 +17,6 @@ export const Content = withContext(Dialog.Content, 'content');
 export const Description = withContext(Dialog.Description, 'description');
 export const Positioner = withContext(Dialog.Positioner, 'positioner');
 export const Title = withContext(Dialog.Title, 'title');
-export const Footer = withContext(ark.div, 'footer');
 export const Trigger = withContext(Dialog.Trigger, 'trigger');
 
 export const CloseButton = (props: HTMLStyledProps<'button'>) => (
@@ -29,6 +26,7 @@ export const CloseButton = (props: HTMLStyledProps<'button'>) => (
 			right='1rem'
 			color='neutral.500'
 			position='absolute'
+			cursor='pointer'
 			_icon={{ boxSize: '1.25rem' }}
 			{...props}
 		>

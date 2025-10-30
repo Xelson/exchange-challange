@@ -17,11 +17,11 @@ export const CurrencyItem = ({ currency, ...props }: HstackProps & { currency: C
 			</Circle>
 
 			<VStack alignItems='start' gap='0.125rem'>
-				<Heading as='h5' lineHeight='1' fontSize='0.875rem'>
+				<Heading as='h5'  fontSize='0.875rem'>
 					{currency.code}
 				</Heading>
 
-				<Text color='neutral.500' lineHeight='1' fontSize='0.75rem'>
+				<Text color='neutral.500'  fontSize='0.75rem'>
 					{currency.name}
 				</Text>
 			</VStack>

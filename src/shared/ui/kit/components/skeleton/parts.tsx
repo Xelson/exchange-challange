@@ -1,4 +1,3 @@
-'use client';
 import type { Assign, HTMLArkProps } from '@ark-ui/react';
 import { ark } from '@ark-ui/react/factory';
 import { forwardRef } from 'react';

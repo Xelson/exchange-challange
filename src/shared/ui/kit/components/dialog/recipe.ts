@@ -3,11 +3,10 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 export const dialog = defineSlotRecipe({
 	className: 'dialog',
-	jsx: ['Dialog.Root'],
-	slots: [...dialogAnatomy.keys(), 'footer'],
+	slots: dialogAnatomy.keys(),
 	base: {
 		backdrop: {
-			background: 'neutral.700/72',
+			background: 'black/50',
 			height: '100vh',
 			left: '0',
 			position: 'fixed',
@@ -36,13 +35,13 @@ export const dialog = defineSlotRecipe({
 		content: {
 			display: 'flex',
 			flexDirection: 'column',
-			alignItems: 'center',
-			gap: '1.5rem',
-			padding: '2rem',
+			alignItems: 'start',
+			gap: '0.75rem',
+			padding: '1rem',
 			margin: '1rem',
-			background: 'neutral.0',
+			background: 'white',
 			borderRadius: '0.5rem',
-			maxW: '26.5rem',
+			maxW: '27.5rem',
 			_focus: {
 				outline: 'none',
 			},
@@ -57,53 +56,15 @@ export const dialog = defineSlotRecipe({
 			},
 		},
 		title: {
-			textStyle: 'h.500',
-			textAlign: 'center',
-			fontWeight: 'bold',
+			fontSize: '1rem',
+			textAlign: 'start',
+			fontWeight: 'semibold',
 		},
 		description: {
-			color: 'neutral.600',
-			textStyle: 'p.300',
-			fontWeight: 'semibold',
-			textAlign: 'center',
-		},
-		footer: {
-			display: 'flex',
-			gap: '0.625rem',
-			width: 'full',
-			marginTop: '1rem',
-		},
-	},
-	variants: {
-		scrollOutside: {
-			true: {
-				positioner: {
-					alignItems: 'start',
-				},
-				content: {
-					marginY: '3rem',
-				},
-			},
-		},
-		variant: {
-			searchResults: {
-				positioner: { padding: 0 },
-				backdrop: {
-					background: 'neutral.0/72',
-					backdropFilter: 'blur(1rem)',
-				},
-				content: {
-					size: 'full',
-					margin: 0,
-					paddingY: '2.5rem',
-					_open: {
-						animation: 'backdrop-in',
-					},
-					_closed: {
-						animation: 'backdrop-out',
-					},
-				},
-			},
+			color: 'neutral.500',
+			fontSize: '0.875rem',
+			fontWeight: 'medium',
+			textAlign: 'start',
 		},
 	},
 });

@@ -2,19 +2,23 @@ import { Badge, Heading, Text } from '@/shared/ui/kit/components';
 import { Icons } from '@/shared/ui/kit/icons';
 import { onLineAtom } from '@reatom/core';
 import { reatomComponent } from '@reatom/react';
-import { Container, HStack, VStack } from 'styled-system/jsx';
+import { HStack, VStack } from 'styled-system/jsx';
 import { ConversionForm } from './ConversionForm';
+import { ConversionResult } from './ConversionResult';
+import { currencySelectDialog } from './currency-select';
 
 export const Component = () => {
 	return (
-		<Container
-			display='flex'
-			flexDirection='column'
-			alignItems='center'
+		<VStack
 			padding='0.625rem'
 			maxWidth='62.5rem'
 			width='full'
+			marginX='auto'
 			gap='1.875rem'
+			tabletDown={{
+				padding: '1.5rem 1rem',
+				marginTop: '1.5rem',
+			}}
 		>
 			<VStack gap='0.625rem'>
 				<Heading fontSize='2rem'>Currency converter</Heading>
@@ -24,16 +28,27 @@ export const Component = () => {
 				</Text>
 			</VStack>
 
-			<HStack gap='1rem'>
+			<HStack
+				gap='1rem'
+				tabletDown={{ flexDirection: 'column' }}
+			>
 				<OnlineBadge />
 				<LastUpdatedBadge />
 				<RefreshRatesBadgeButton />
 			</HStack>
 
-			<HStack gap='1.875rem' width='full'>
+			<HStack
+				alignItems='start'
+				gap='1.875rem'
+				width='full'
+				tabletDown={{ flexDirection: 'column' }}
+			>
 				<ConversionForm />
+				<ConversionResult />
 			</HStack>
-		</Container>
+
+			<currencySelectDialog.Viewport />
+		</VStack>
 	);
 };
 

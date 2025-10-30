@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, type ComponentRef, type Ref } from 'react';
 import { Field, useFieldContext } from '@ark-ui/react';
 import { ark, type HTMLArkProps } from '@ark-ui/react/factory';
 import { textField } from 'styled-system/recipes';
@@ -54,7 +54,7 @@ function BaseElement(props: BaseElementProps) {
 	return <ark.div {...props} {...getProps()} />;
 }
 
-type BaseInputProps = HTMLArkProps<'input'>;
+type BaseInputProps = HTMLArkProps<'input'> & { ref: Ref<ComponentRef<'input'>> };
 function BaseInput(props: BaseInputProps) {
 	const getProps = useTextFieldPropsStrictContext();
 	const { value, onValueChange } = useTextFieldValueStrictContext();

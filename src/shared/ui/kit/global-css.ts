@@ -5,6 +5,7 @@ export const globalCss = defineGlobalStyles({
 		colorPalette: 'blue',
 		fontStyle: 'Inter Variable',
 		height: 'full',
+		color: 'neutral.950',
 	},
 	'body': {
 		height: 'full',
