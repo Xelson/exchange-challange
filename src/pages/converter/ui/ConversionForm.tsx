@@ -7,7 +7,7 @@ import { currencySelectDialog } from './currency-select';
 import { wrap } from '@reatom/core';
 import { converterForm } from '../model/form';
 
-export const ConversionForm = () => {
+export const ConversionForm = reatomComponent(() => {
 	return (
 		<VStack
 			padding='1.25rem'
@@ -32,9 +32,11 @@ export const ConversionForm = () => {
 				<SwapButton />
 				<ToField />
 			</HStack>
+
+			<SubmitError />
 		</VStack>
 	);
-};
+}, 'ConversionForm');
 
 const Field = styled('label', {
 	base: {
@@ -156,3 +158,12 @@ const SwapButton = reatomComponent(() => {
 		</styled.button>
 	);
 }, 'ConversionForm.SwapButton');
+
+const SubmitError = reatomComponent(() => {
+	const error = converterForm.submit.error();
+	if (!error) return;
+
+	return (
+		<Text color='red.500'>{error?.message}</Text>
+	);
+}, 'ConversionForm.SubmitError');

@@ -1,6 +1,6 @@
 import { Badge, Heading, Text } from '@/shared/ui/kit/components';
 import { Icons } from '@/shared/ui/kit/icons';
-import { noop, onLineAtom, wrap } from '@reatom/core';
+import { noop, onLineAtom } from '@reatom/core';
 import { reatomComponent } from '@reatom/react';
 import { HStack, VStack } from 'styled-system/jsx';
 import { ConversionForm } from './ConversionForm';
@@ -82,7 +82,8 @@ const LastUpdatedBadge = reatomComponent(() => {
 }, 'LastUpdatedBadge');
 
 const RefreshRatesBadgeButton = reatomComponent(() => {
-	const { triggered, errors } = converterForm.validation();
+	const { dirty } = converterForm.focus();
+	const { errors } = converterForm.validation();
 	const pending = converterForm.submit.pending() > 0;
 
 	return (
@@ -93,11 +94,14 @@ const RefreshRatesBadgeButton = reatomComponent(() => {
 				opacity: 0.5,
 				cursor: 'not-allowed',
 			}}
+			_icon={{
+				animation: pending ? 'spin' : 'none',
+			}}
 			asChild
 		>
 			<button
-				disabled={pending || !triggered || errors.length > 0}
-				onClick={wrap(() => converterForm.submit(true).catch(noop))}
+				disabled={pending || !dirty || errors.length > 0}
+				onClick={() => converterForm.submit().catch(noop)}
 			>
 				<Icons.Refresh />
 				<Text>Refresh rates</Text>

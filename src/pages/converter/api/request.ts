@@ -2,7 +2,7 @@ import type { Either } from '@/shared/lib/neverthrow';
 import { abortVar, wrap } from '@reatom/core';
 
 type FetchExchangeRates = (params: { from: string; to: string }, signal: AbortSignal) => Promise<
-	Either<{ from: string; to: string; rate: number }, string>
+	Either<{ from: string; to: string; rate: number; inverseRate: number }, string>
 >;
 
 export const defineFetchRatesRequest = (handler: FetchExchangeRates) =>

@@ -1,4 +1,4 @@
-import { action, assign, atom, named } from '@reatom/core';
+import { action, atom, named } from '@reatom/core';
 
 type BaseCacheItem = Record<string, unknown>;
 
@@ -16,8 +16,8 @@ export const reatomCache = <CacheItem extends BaseCacheItem, Key = string>(
 	}: CacheArgs<CacheItem, Key> = {},
 	name: string = named('cacheMap'),
 ) => {
-	const toCacheEntry = (entry: CacheItem, expireAt: number) => {
-		return { data: entry, expireAt };
+	const toCacheEntry = (entry: CacheItem, expireAt: number, createdAt = Date.now()) => {
+		return { data: entry, expireAt, createdAt };
 	};
 
 	return atom(
@@ -33,10 +33,14 @@ export const reatomCache = <CacheItem extends BaseCacheItem, Key = string>(
 		}, `${target.name}.write`),
 
 		get: (key: Key) => {
-			const entry = target().get(toKey(key));
-			if (entry && entry.expireAt > Date.now())
-				return entry.data;
-
+			const map = target();
+			const entry = map.get(toKey(key));
+			if (entry) {
+				if (entry.expireAt > Date.now())
+					return entry;
+				else
+					map.delete(toKey(key));
+			}
 			return null;
 		},
 	}));

@@ -27,13 +27,14 @@ export const currencySelectDialog = reatomControllablePopup<Dialog.RootProps, In
 
 		const collectionAtom = computed(() => {
 			const search = searchText().toLowerCase();
-			const items = currenciesList.slice(0, itemsToShow());
 			const filteredItems = search
-				? items.filter(item => item.name.toLowerCase().includes(search) || item.code.toLowerCase().includes(search))
-				: items;
+				? currenciesList.filter(item => item.name.toLowerCase().includes(search) || item.code.toLowerCase().includes(search))
+				: currenciesList;
+
+			const paginatedItems = filteredItems.slice(0, itemsToShow());
 
 			return createListCollection({
-				items: filteredItems,
+				items: paginatedItems,
 				itemToValue: item => item.code,
 				itemToString: item => item.name,
 			});
