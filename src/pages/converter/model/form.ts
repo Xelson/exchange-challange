@@ -1,24 +1,23 @@
 import {
+	abortVar,
 	action,
-	atom,
-	computed,
 	effect,
-	getCalls,
-	isCausedBy,
+	memo,
 	noop,
-	onLineAtom,
 	reatomField,
 	reatomForm,
 	sleep,
-	withCallHook,
-	withComputed,
+	withLocalStorage,
+	withMiddleware,
 	wrap,
+	type FieldAtom,
 } from '@reatom/core';
 
-import { currenciesList } from './currency';
+import { currenciesList, type Currency } from './currency';
 import { invariant } from '@/shared/lib/assert/invariant';
-import { fetchExchangeRates } from '../api/fetch-rates';
 import { z } from 'zod/v4-mini';
+import { inverseRateResource, rateResource } from './rates';
+import { useCache } from './use-cache';
 
 const DEFAULT_FROM_CURRENCY_CODE = 'USD';
 const DEFAULT_TO_CURRENCY_CODE = 'EUR';
@@ -29,15 +28,30 @@ const defaultTo = currenciesList.find(currency => currency.code === DEFAULT_TO_C
 invariant(defaultFrom, `Failed to initialize default currency ${DEFAULT_FROM_CURRENCY_CODE}`);
 invariant(defaultTo, `Failed to initialize default currency ${DEFAULT_TO_CURRENCY_CODE}`);
 
+const withAmountFieldPersist = withMiddleware((target: FieldAtom) => {
+	return target.extend(withLocalStorage(target.name));
+});
+
+const withCurrencyFieldPersist = withMiddleware((target: FieldAtom<Currency>) => {
+	return target.extend(withLocalStorage({
+		key: target.name,
+		toSnapshot: currency => currency.code,
+		fromSnapshot: (raw) => {
+			if (typeof raw !== 'string') return target.initState();
+			return currenciesList.find(currency => currency.code === raw) ?? target.initState();
+		},
+	}));
+});
+
 export const converterForm = reatomForm(name => ({
 	amount: reatomField(null, {
 		name: `${name}.amount`,
 		filter: value => !value || /^[0-9,.]+$/.test(value),
 		toState: (value: string) => Number(value),
 		fromState: value => value ? value.toString() : '',
-	}),
-	from: reatomField(defaultFrom, `${name}.from`),
-	to: reatomField(defaultTo, `${name}.to`),
+	}).extend(withAmountFieldPersist),
+	from: reatomField(defaultFrom, `${name}.from`).extend(withCurrencyFieldPersist),
+	to: reatomField(defaultTo, `${name}.to`).extend(withCurrencyFieldPersist),
 }), {
 	name: 'converterForm',
 	schema: z.object({
@@ -55,15 +69,14 @@ export const converterForm = reatomForm(name => ({
 			};
 		}),
 	),
-	onSubmit: async ({ from, to }, ...rest) => {
-		// @ts-expect-error will come in the next commit of forms
-		if (rest[0])
+	onSubmit: async ({ from, to }, skipDebounce?: boolean) => {
+		if (skipDebounce)
 			await wrap(sleep(250)); // conditinal async based debounce
 
-		const { data, error } = await wrap(fetchExchangeRates({ from: from.code, to: to.code }));
-		invariant(!error, String(error));
-
-		return data ?? undefined;
+		await wrap(Promise.all([
+			rateResource(from.code, to.code),
+			inverseRateResource(from.code, to.code),
+		]));
 	},
 }).extend(target => ({
 	swapDirections: action(() => {
@@ -76,38 +89,13 @@ export const converterForm = reatomForm(name => ({
 }));
 
 effect(() => {
-	const online = onLineAtom();
-	if (!online) return;
+	if (useCache()) return;
 
-	const amount = converterForm.fields.amount();
-	if (!amount) return;
+	const positiveAmount = memo(() => Number(converterForm.fields.amount()) > 0);
+	if (!positiveAmount) return;
 
 	const to = converterForm.fields.to();
 	const from = converterForm.fields.from();
 	if (to !== from)
-		converterForm.submit().catch(noop);
+		abortVar.spawn(() => converterForm.submit().catch(noop));
 }, `${converterForm.submit.name}.autoSubmitEffect`);
-
-// TODO: replace with converterForm.submit.data
-export const dataAtom = atom<{ from: string; to: string; rate: number } | undefined>(
-	undefined,
-	`${converterForm.submit.name}.data`,
-).extend(
-	withComputed((state) => {
-		getCalls(converterForm.submit.onFulfill).forEach(({ payload }) => {
-			state = payload.payload;
-		});
-		return state;
-	}),
-);
-converterForm.submit.onFulfill.extend(withCallHook(() => dataAtom()));
-
-export const conversionResult = computed(() => {
-	const data = dataAtom();
-	if (!data) return null;
-
-	const amount = converterForm.fields.amount();
-	if (!amount) return null;
-
-	return data.rate * amount;
-}, 'conversionResult');

@@ -7,6 +7,7 @@ import { ConversionForm } from './ConversionForm';
 import { ConversionResult } from './ConversionResult';
 import { currencySelectDialog } from './currency-select';
 import { converterForm } from '../model/form';
+import { conversionResult } from '../model/rates';
 
 export const Component = () => {
 	return (
@@ -66,27 +67,36 @@ const OnlineBadge = reatomComponent(() => {
 }, 'OnlineBadge');
 
 const LastUpdatedBadge = reatomComponent(() => {
+	const lastUpdatedAt = conversionResult.lastUpdatedAt();
+	if (!lastUpdatedAt) return null;
+
 	return (
 		<HStack color='neutral.500' fontSize='0.75rem' gap='0.375rem'>
 			<Icons.Time boxSize='0.75rem' />
 
 			<Text>
-				Last updated: {new Date().toLocaleString()}
+				Last updated: {lastUpdatedAt.toLocaleString()}
 			</Text>
 		</HStack>
 	);
-});
+}, 'LastUpdatedBadge');
 
 const RefreshRatesBadgeButton = reatomComponent(() => {
+	const { triggered, errors } = converterForm.validation();
 	const pending = converterForm.submit.pending() > 0;
 
 	return (
 		<Badge
 			cursor='pointer'
+			transition='100ms opacity'
+			_disabled={{
+				opacity: 0.5,
+				cursor: 'not-allowed',
+			}}
 			asChild
 		>
 			<button
-				disabled={pending}
+				disabled={pending || !triggered || errors.length > 0}
 				onClick={wrap(() => converterForm.submit(true).catch(noop))}
 			>
 				<Icons.Refresh />
@@ -94,4 +104,4 @@ const RefreshRatesBadgeButton = reatomComponent(() => {
 			</button>
 		</Badge>
 	);
-});
+}, 'RefreshRatesBadgeButton');

@@ -1,7 +1,8 @@
 import { DividerStack, Heading, Text } from '@/shared/ui/kit/components';
 import { reatomComponent } from '@reatom/react';
 import { Center, HStack, VStack } from 'styled-system/jsx';
-import { conversionResult, converterForm, dataAtom } from '../model/form';
+import { converterForm } from '../model/form';
+import { conversionResult } from '../model/rates';
 
 export const ConversionResult = () => {
 	return (
@@ -39,7 +40,7 @@ export const ConversionResult = () => {
 };
 
 export const RateIndicator = reatomComponent(() => {
-	const rate = conversionResult();
+	const rate = conversionResult.fromAmount();
 	const from = converterForm.fields.from();
 	const to = converterForm.fields.to();
 	const amount = converterForm.fields.amount();
@@ -68,7 +69,7 @@ export const ExchangeRateDetails = reatomComponent(() => {
 				</Text>
 
 				<Text fontSize='0.75rem' fontWeight='600'>
-					1 {from.code} = {dataAtom()?.rate?.toFixed(2)} {to.code}
+					1 {from.code} = {conversionResult()?.rate.toFixed(6)} {to.code}
 				</Text>
 			</HStack>
 
@@ -76,9 +77,8 @@ export const ExchangeRateDetails = reatomComponent(() => {
 				<Text color='neutral.500' fontSize='0.75rem'>
 					Inverse Rate
 				</Text>
-
 				<Text fontSize='0.75rem' fontWeight='600'>
-					1 EUR = 1.086957 USD
+					1 {to.code} = {conversionResult.inverse()?.rate.toFixed(6)} {from.code}
 				</Text>
 			</HStack>
 		</VStack>
