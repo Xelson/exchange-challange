@@ -8,7 +8,6 @@ import {
 	reatomForm,
 	sleep,
 	withLocalStorage,
-	withMiddleware,
 	wrap,
 	type FieldAtom,
 } from '@reatom/core';
@@ -17,7 +16,7 @@ import { currenciesList, type Currency } from './currency';
 import { invariant } from '@/shared/lib/assert/invariant';
 import { z } from 'zod/v4-mini';
 import { inverseRateResource, rateResource } from './rates';
-import { useCache } from './use-cache';
+import { useCache } from './use-cache'; ;
 
 const DEFAULT_FROM_CURRENCY_CODE = 'USD';
 const DEFAULT_TO_CURRENCY_CODE = 'EUR';
@@ -28,11 +27,11 @@ const defaultTo = currenciesList.find(currency => currency.code === DEFAULT_TO_C
 invariant(defaultFrom, `Failed to initialize default currency ${DEFAULT_FROM_CURRENCY_CODE}`);
 invariant(defaultTo, `Failed to initialize default currency ${DEFAULT_TO_CURRENCY_CODE}`);
 
-const withAmountFieldPersist = withMiddleware((target: FieldAtom) => {
+const withAmountFieldPersist = (target: FieldAtom) => {
 	return target.extend(withLocalStorage(target.name));
-});
+};
 
-const withCurrencyFieldPersist = withMiddleware((target: FieldAtom<Currency>) => {
+const withCurrencyFieldPersist = (target: FieldAtom<Currency>) => {
 	return target.extend(withLocalStorage({
 		key: target.name,
 		toSnapshot: currency => currency.code,
@@ -41,7 +40,7 @@ const withCurrencyFieldPersist = withMiddleware((target: FieldAtom<Currency>) =>
 			return currenciesList.find(currency => currency.code === raw) ?? target.initState();
 		},
 	}));
-});
+};
 
 export const converterForm = reatomForm(name => ({
 	amount: reatomField(null, {
