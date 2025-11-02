@@ -1,6 +1,6 @@
 import { Badge, Heading, Text } from '@/shared/ui/kit/components';
 import { Icons } from '@/shared/ui/kit/icons';
-import { noop, onLineAtom } from '@reatom/core';
+import { noop, onLineAtom, wrap } from '@reatom/core';
 import { reatomComponent } from '@reatom/react';
 import { HStack, VStack } from 'styled-system/jsx';
 import { ConversionForm } from './ConversionForm';
@@ -101,7 +101,7 @@ const RefreshRatesBadgeButton = reatomComponent(() => {
 		>
 			<button
 				disabled={pending || !dirty || errors.length > 0}
-				onClick={() => converterForm.submit().catch(noop)}
+				onClick={wrap(() => converterForm.submit().catch(noop))}
 			>
 				<Icons.Refresh />
 				<Text>Refresh rates</Text>
