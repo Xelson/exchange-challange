@@ -1,7 +1,7 @@
 import { Dialog, Listbox, TextField } from '@/shared/ui/kit/components';
 import { reatomControllablePopup, reatomScrollPagination } from '@/shared/ui/reatom';
 import { currenciesList, type Currency } from '../model/currency';
-import { atom, computed, reatomNumber, reatomString, withChangeHook, wrap } from '@reatom/core';
+import { atom, computed, reatomNumber, reatomString, sleep, withAsyncData, withChangeHook, wrap } from '@reatom/core';
 import { createListCollection, Portal } from '@ark-ui/react';
 import { reatomComponent } from '@reatom/react';
 import { Icons } from '@/shared/ui/kit/icons';
@@ -25,8 +25,14 @@ export const currencySelectDialog = reatomControllablePopup<Dialog.RootProps, In
 			onLoadMore: () => itemsToShow.increment(30),
 		}, `${name}.scrollPagination`);
 
+		const searchTextDebounce = computed(async () => {
+			const newText = searchText();
+			await wrap(sleep(250));
+			return newText;
+		}).extend(withAsyncData({ initState: '' }));
+
 		const collectionAtom = computed(() => {
-			const search = searchText().toLowerCase();
+			const search = searchTextDebounce.data().toLowerCase();
 			const filteredItems = search
 				? currenciesList.filter(item => item.name.toLowerCase().includes(search) || item.code.toLowerCase().includes(search))
 				: currenciesList;
@@ -86,6 +92,8 @@ export const currencySelectDialog = reatomControllablePopup<Dialog.RootProps, In
 					width='full'
 					value={selectedCurrency ? [selectedCurrency.code] : []}
 					onValueChange={wrap(details => handleSelect(details.value[0]))}
+					marginBottom='-1rem'
+					maskImage='linear-gradient(to bottom, #000 calc(100% - 1rem), transparent 100%)'
 				>
 					<Listbox.Content
 						ref={wrap((el) => { scrollPagination.containerRef.set(el); })}
@@ -93,6 +101,7 @@ export const currencySelectDialog = reatomControllablePopup<Dialog.RootProps, In
 						gap='0.5rem'
 						flexGrow='1'
 						overflowY='auto'
+						scrollPaddingBottom='1rem'
 					>
 						{collection.items.map(currency => (
 							<Listbox.Item key={currency.code} item={currency}>

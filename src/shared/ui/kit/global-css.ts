@@ -2,14 +2,17 @@ import { defineGlobalStyles } from '@pandacss/dev';
 
 export const globalCss = defineGlobalStyles({
 	'html': {
+		display: 'flex',
+		justifyContent: 'center',
 		colorPalette: 'blue',
 		fontStyle: 'Inter Variable',
-		height: 'full',
 		color: 'neutral.950',
+		minHeight: '100vh',
 	},
 	'body': {
-		height: 'full',
 		display: 'flex',
+		width: 'full',
+		height: 'auto',
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
