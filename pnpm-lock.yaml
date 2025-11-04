@@ -15,11 +15,11 @@ importers:
         specifier: ^5.2.8
         version: 5.2.8
       '@reatom/core':
-        specifier: 1000.0.0-alpha.47
-        version: 1000.0.0-alpha.47
+        specifier: 1000.0.0-alpha.50
+        version: 1000.0.0-alpha.50
       '@reatom/react':
-        specifier: 1000.0.0-alpha.41
-        version: 1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.47)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: 1000.0.0-alpha.50
+        version: 1000.0.0-alpha.50(@reatom/core@1000.0.0-alpha.50)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -515,18 +515,18 @@ packages:
   '@pandacss/types@1.4.3':
     resolution: {integrity: sha512-8bz5jqQLhHTYlzVUBxpWMf+lzexQqlZJY8Cot2B7wJjg9T+VK3guTxNJV1ioiGexwcDQrn/MJiNszd6C28djqw==}
 
-  '@reatom/core@1000.0.0-alpha.47':
-    resolution: {integrity: sha512-HyqD+7rJ2XtBJd+ZlTCte7+zVKx9ItTadDD28chbJ3jEBKG57O5vMWr39ssYmOAz8IHBUT23+4JIulqUVhcsvQ==}
+  '@reatom/core@1000.0.0-alpha.50':
+    resolution: {integrity: sha512-rKZ/T4B4hIOaiuquCPIJaxKo7eP/UZpa4gaWwGID0YGV1P7Gm/QJKjvVTBrVz4W+aw6rzCbJSA1r2jEp/sxWxw==}
     peerDependencies:
       idb-keyval: '*'
     peerDependenciesMeta:
       idb-keyval:
         optional: true
 
-  '@reatom/react@1000.0.0-alpha.41':
-    resolution: {integrity: sha512-Zi3SnzEaiqMiXBfnLPZHpTiU23dzT7qz5Z71DJnfS6FU8WRhnUF7qHu+VFDhDhpUapT28ZvwcBy2Aht0QAd4jQ==}
+  '@reatom/react@1000.0.0-alpha.50':
+    resolution: {integrity: sha512-UA1KE13xnEUMIeY+NdSQeuKPIcSiZlk61BGRPio48droB92gg0EPokal07jAZviTsdM/BDVus9rDmZSReZdf0g==}
     peerDependencies:
-      '@reatom/core': ^1000.0.0-alpha.41
+      '@reatom/core': ^1000.0.0-alpha.50
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
 
@@ -2676,13 +2676,13 @@ snapshots:
 
   '@pandacss/types@1.4.3': {}
 
-  '@reatom/core@1000.0.0-alpha.47':
+  '@reatom/core@1000.0.0-alpha.50':
     dependencies:
       '@standard-schema/spec': 1.0.0
 
-  '@reatom/react@1000.0.0-alpha.41(@reatom/core@1000.0.0-alpha.47)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@reatom/react@1000.0.0-alpha.50(@reatom/core@1000.0.0-alpha.50)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
-      '@reatom/core': 1000.0.0-alpha.47
+      '@reatom/core': 1000.0.0-alpha.50
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
 
